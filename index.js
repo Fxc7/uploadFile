@@ -15,7 +15,7 @@ case 'media2url':
     fs.unlinkSync(media)
 } else {
     reply(`Reply Media Dengan Caption ${prefix + command}`)
-	}
+}
 break
 
 //Sesuaikan Dengan Script Kalian
