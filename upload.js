@@ -2,22 +2,22 @@
 
 const axios = require('axios').default;
 const FormData = require('form-data')
-const fs = require('fs');
+const { fromBuffer } = require("file-type");
 
-const uploadFile = (path, nameFile) => new Promise((resolve, reject) => {
-     const fd = new FormData()
-     fd.append('sampleFile', fs.createReadStream(path), nameFile)
-     axios({
-          method: 'POST',
-          url: 'https://fxc7-api.herokuapp.com/api/tools/upload',
-          data: fd,
-          headers: {
-               'user-agent': 'MRHRTZ-ZONE :D',
-               'content-type': `multipart/form-data; boundary=${fd._boundary}`
-          }
-     })
-     .then(result => resolve(result))
-     .catch(reject)
-})
+function uploadFile(buffer){
+  return new Promise(async(resolve, reject) => {
+    let { ext } = await fromBuffer(buff);
+    const fd = new FormData();
+    fd.append("sampleFile", buffer, new Date().getTime()+"."+ ext);
+    await axios.request({
+      method: "POST",
+      url: "https://api-xcoders.xyz/api/tools/upload",
+      data: fd,
+      headers: {
+        'content-type':`multipart/form-data; boundary=${fd._boundary}`
+      }
+    }).then(({data}) => resolve(data)).catch(reject);
+  });
+}
 
 module.exports = { uploadFile }
